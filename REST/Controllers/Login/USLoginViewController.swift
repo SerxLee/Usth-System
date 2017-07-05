@@ -9,10 +9,9 @@
 import UIKit
 import SnapKit
 
-class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDataDelegate{
+class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDataDelegate {
 
     private var _loginView: USLoginView?
-    
     private var _subjectResultModel: USErrorAndData?
     
     private var userName: String?
