@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		28D2FA6ABA8AB0CE2E3836E7 /* Pods_Usth_SystemUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54CEA0BA312B3F47F81E0D34 /* Pods_Usth_SystemUITests.framework */; };
 		9B01232A1EE181E400B45236 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B0123291EE181E400B45236 /* iconfont.ttf */; };
-		9B01232C1EE1902200B45236 /* USAutoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B01232B1EE1902200B45236 /* USAutoScrollView.swift */; };
 		9B01232E1EE249F300B45236 /* SMCycleBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B01232D1EE249F300B45236 /* SMCycleBannerView.swift */; };
 		9B0123301EE2571700B45236 /* build.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B01232F1EE2571700B45236 /* build.png */; };
 		9B0123341EE26D1300B45236 /* USSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0123331EE26D1300B45236 /* USSearchView.swift */; };
@@ -193,7 +192,6 @@
 		77419624C83395E70C646067 /* Pods-Usth SystemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Usth SystemTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Usth SystemTests/Pods-Usth SystemTests.release.xcconfig"; sourceTree = "<group>"; };
 		98FA3112B09B3C1A10970010 /* Pods-Usth System.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Usth System.release.xcconfig"; path = "Pods/Target Support Files/Pods-Usth System/Pods-Usth System.release.xcconfig"; sourceTree = "<group>"; };
 		9B0123291EE181E400B45236 /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
-		9B01232B1EE1902200B45236 /* USAutoScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = USAutoScrollView.swift; path = REST/View/Home/USAutoScrollView.swift; sourceTree = "<group>"; };
 		9B01232D1EE249F300B45236 /* SMCycleBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SMCycleBannerView.swift; path = REST/View/Home/SMCycleBannerView.swift; sourceTree = "<group>"; };
 		9B01232F1EE2571700B45236 /* build.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = build.png; path = Image/build.png; sourceTree = "<group>"; };
 		9B0123331EE26D1300B45236 /* USSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = USSearchView.swift; path = REST/View/Search/USSearchView.swift; sourceTree = "<group>"; };
@@ -860,7 +858,6 @@
 				9BA5F4441ED428CA00EC3D16 /* USHomeView.swift */,
 				9B33FE031EDFA60B006F07DB /* USHomeCommentTableViewCell.swift */,
 				9B01232D1EE249F300B45236 /* SMCycleBannerView.swift */,
-				9B01232B1EE1902200B45236 /* USAutoScrollView.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -1521,7 +1518,6 @@
 				9BA5F45F1ED7C7D700EC3D16 /* USPublishNewCommentOperation.m in Sources */,
 				9BE321C51EC9D1FE0096FD47 /* USTabBarViewController.swift in Sources */,
 				9BD2076D1EE91CBA0030936B /* UIView+RoundedCorner.m in Sources */,
-				9B01232C1EE1902200B45236 /* USAutoScrollView.swift in Sources */,
 				9B7C62891EC9493C0050C3C7 /* AppDelegate.m in Sources */,
 				9BE321C71EC9D2390096FD47 /* USNavigationViewController.swift in Sources */,
 				9BA5F45B1ED670B700EC3D16 /* UIImage+reduceImage.swift in Sources */,
