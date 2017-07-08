@@ -188,7 +188,7 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
             tableV.register(USSubjectResultTableViewCell.self, forCellReuseIdentifier: subjectResultTableCellIdentifier)
             tableV.register(USSubjectResultDetailTableViewCell.self, forCellReuseIdentifier: subjectResultDetailTableCellIdentifier)
             tableV.delegate = self
-            tableV.mj_header = MJRefreshHeader.init(refreshingTarget: self, refreshingAction: #selector(self.headerRefreshing))
+            tableV.mj_header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(self.headerRefreshing))
             tableV.dataSource = self
             tableV.rowHeight = 40.0
             tableV.separatorStyle = .none

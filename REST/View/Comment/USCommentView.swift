@@ -158,6 +158,19 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
         self.commentModel!.commentsArr = newCommentsArr
         self.reloadCommentListView(withData: self.commentModel, isFooterRefresh: false)
     }
+    
+    func changeDiggStateAfterError() {
+        var commentsArr = self.commentModel!.commentsArr
+        let tempComment: USComment! = commentsArr![self.diggIndexPath.row] as! USComment
+        if (tempComment.digged.intValue == 1) {
+            tempComment.digged = 0
+            tempComment.digg = tempComment.digg.intValue - 1 as NSNumber
+            commentsArr![self.diggIndexPath.row] = tempComment
+            self.commentModel!.commentsArr = commentsArr
+            self.tableView!.reloadRows(at: [diggIndexPath], with: .none)
+            self.delegete?.commentViewDiggComment(operationComment: tempComment)
+        }
+    }
     //MARK: - ------Delegate View------
     
     func commentTableViewCell(commentCell: USCommentTableViewCell, didClickDiggBtn: UIButton) {
@@ -165,12 +178,12 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
         var commentsArr = self.commentModel!.commentsArr
         let tempComment: USComment! = commentsArr![self.diggIndexPath.row] as! USComment
         if (tempComment.digged.intValue != 1) {
-        tempComment.digged = 1
-        tempComment.digg = tempComment.digg.intValue + 1 as NSNumber
-        commentsArr![self.diggIndexPath.row] = tempComment
-        self.commentModel!.commentsArr = commentsArr
-        self.tableView!.reloadRows(at: [diggIndexPath], with: .none)
-        self.delegete?.commentViewDiggComment(operationComment: tempComment)
+            tempComment.digged = 1
+            tempComment.digg = tempComment.digg.intValue + 1 as NSNumber
+            commentsArr![self.diggIndexPath.row] = tempComment
+            self.commentModel!.commentsArr = commentsArr
+            self.tableView!.reloadRows(at: [diggIndexPath], with: .none)
+            self.delegete?.commentViewDiggComment(operationComment: tempComment)
         }
     }
     
