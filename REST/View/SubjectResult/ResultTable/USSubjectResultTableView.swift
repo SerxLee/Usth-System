@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import MJRefresh
 
 enum ResultType {
     case passing
@@ -27,6 +28,7 @@ private let subjectResultDetailTableCellIdentifier: String = "subjectResultDetai
 @objc protocol USSubjectResultTableViewDelegate: NSObjectProtocol {
     
     func subjectResultTableViewDidSelecteCell(subject: USSubject)
+    func subjectResultTableViewHeaderRefreshing()
     
 }
 
@@ -61,6 +63,21 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
         self.tableView?.snp.makeConstraints({ (make) in
             make.edges.equalTo(self)
         })
+    }
+    
+    func startRefresh() {
+        if !self.tableView!.mj_header.isRefreshing() {
+            self.tableView!.mj_header.beginRefreshing()
+        }
+    }
+    
+    func endRefreshing() {
+        if (self.tableView!.mj_header.isRefreshing()) {
+            self.tableView!.mj_header.endRefreshing()
+        }
+        if (self.tableView!.mj_footer != nil && self.tableView!.mj_footer.isRefreshing()) {
+            self.tableView!.mj_footer.endRefreshing()
+        }
     }
     
     func reloadTableWithData(_ data: USErrorAndData?) {
@@ -157,6 +174,10 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
     
     //MARK: - ------Event Response------
     
+    func headerRefreshing() -> Void {
+        self.delegate?.subjectResultTableViewHeaderRefreshing()
+    }
+    
     //MARK: - ------Getters and Setters------
     var tableView: UITableView? {
         get {
@@ -167,6 +188,7 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
             tableV.register(USSubjectResultTableViewCell.self, forCellReuseIdentifier: subjectResultTableCellIdentifier)
             tableV.register(USSubjectResultDetailTableViewCell.self, forCellReuseIdentifier: subjectResultDetailTableCellIdentifier)
             tableV.delegate = self
+            tableV.mj_header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(self.headerRefreshing))
             tableV.dataSource = self
             tableV.rowHeight = 40.0
             tableV.separatorStyle = .none

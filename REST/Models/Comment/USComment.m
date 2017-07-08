@@ -91,13 +91,24 @@
     AppDelegate* appDelegate =(AppDelegate *)[[UIApplication sharedApplication] delegate];
     ObjectRequestSuccess success = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         USComment *comment = [mappingResult.dictionary objectForKey:@""];
-        [self getLaStComment:comment];
-        if ([self.delegate respondsToSelector:@selector(replyCommentSuccess:)]) {
-            [self.delegate replyCommentSuccess:comment];
+        if (comment.errCode == -1) {
+            if ([self.delegate respondsToSelector:@selector(replyCommentWithError:)]) {
+                USError *err = [[USError alloc] initWithErrorReason:comment.errReason];
+                [self.delegate replyCommentWithError:err];
+            }
+        }
+        else {
+            [self getLaStComment:comment];
+            if ([self.delegate respondsToSelector:@selector(replyCommentSuccess:)]) {
+                [self.delegate replyCommentSuccess:comment];
+            }
         }
     };
     ObjectRequestFailure failure = ^(RKObjectRequestOperation *operation, NSError *error){
-        NSError *temp = error;
+        if ([self.delegate respondsToSelector:@selector(replyCommentWithError:)]) {
+            USError *err = [[USError alloc] initWithResponseError:error];
+            [self.delegate replyCommentWithError:err];
+        }
     };
     [appDelegate.operationFactory.replyCommentOperation replyCommentWithParameters:parameters andClassId:classId andCommentId:refId success:success failure:failure];
 }
@@ -106,13 +117,24 @@
     AppDelegate* appDelegate =(AppDelegate *)[[UIApplication sharedApplication] delegate];
     ObjectRequestSuccess success = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         USComment *comment = [mappingResult.dictionary objectForKey:@""];
-        [self getLaStComment:comment];
-        if ([self.delegate respondsToSelector:@selector(publishCommentSuccess:)]) {
-            [self.delegate publishCommentSuccess:comment];
+        if (comment.errCode == -1) {
+            if ([self.delegate respondsToSelector:@selector(publishCommentsWithError:)]) {
+                USError *err = [[USError alloc] initWithErrorReason:comment.errReason];
+                [self.delegate publishCommentsWithError:err];
+            }
+        }
+        else {
+            [self getLaStComment:comment];
+            if ([self.delegate respondsToSelector:@selector(publishCommentSuccess:)]) {
+                [self.delegate publishCommentSuccess:comment];
+            }
         }
     };
     ObjectRequestFailure failure = ^(RKObjectRequestOperation *operation, NSError *error){
-        NSError *temp = error;
+        if ([self.delegate respondsToSelector:@selector(publishCommentsWithError:)]) {
+            USError *err = [[USError alloc] initWithResponseError:error];
+            [self.delegate publishCommentsWithError:err];
+        }
     };
     [appDelegate.operationFactory.publishNewCommentOperation publishNewCommentWith:parameters classId:classId success:success failure:failure];
 }
@@ -121,13 +143,24 @@
     AppDelegate* appDelegate =(AppDelegate *)[[UIApplication sharedApplication] delegate];
     ObjectRequestSuccess success = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         USComment *comment = [mappingResult.dictionary objectForKey:@""];
-        [self getLaStComment:comment];
-        if ([self.delegate respondsToSelector:@selector(diggCommentSuccess:)]) {
-            [self.delegate diggCommentSuccess:comment];
+        if (comment.errCode == -1) {
+            if ([self.delegate respondsToSelector:@selector(diggCommentWithError:)]) {
+                USError *err = [[USError alloc] initWithErrorReason:comment.errReason];
+                [self.delegate diggCommentWithError:err];
+            }
+        }
+        else {
+            [self getLaStComment:comment];
+            if ([self.delegate respondsToSelector:@selector(diggCommentSuccess:)]) {
+                [self.delegate diggCommentSuccess:comment];
+            }
         }
     };
     ObjectRequestFailure failure = ^(RKObjectRequestOperation *operation, NSError *error){
-        NSError *temp = error;
+        if ([self.delegate respondsToSelector:@selector(diggCommentWithError:)]) {
+            USError *err = [[USError alloc] initWithResponseError:error];
+            [self.delegate diggCommentWithError:err];
+        }
     };
     [appDelegate.operationFactory.diggCommentOperation diggCommentWithCommentId:commentId success:success failure:failure];
 }

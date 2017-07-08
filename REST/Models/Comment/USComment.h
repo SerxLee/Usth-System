@@ -63,7 +63,7 @@
 //获取某个课程评论列表
 -(void)getCommentsWithClassId: (NSString *)classId;
 
--(void)getCommentsWithClassId: (NSString *)classId andCommentsCount:(NSInteger)commentsCount;
+//-(void)getCommentsWithClassId: (NSString *)classId andCommentsCount:(NSInteger)commentsCount;
 
 
 //获取下一页评论数据

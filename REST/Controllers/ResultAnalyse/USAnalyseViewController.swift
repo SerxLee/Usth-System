@@ -89,13 +89,13 @@ class USAnalyseViewController: UIViewController {
                 PHImageManager.default().requestImage(for: asset,
                                                       targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit,
                                                       options: nil, resultHandler: { (image, _:[AnyHashable : Any]?) in
-                                                        print("获取原图成功：\(image)")
+//                                                        print("获取原图成功：\(image)")
                 })
                 //获取保存的缩略图
                 PHImageManager.default().requestImage(for: asset,
                                                       targetSize: CGSize(width:100, height:100), contentMode: .aspectFit,
                                                       options: nil, resultHandler: { (image, _:[AnyHashable : Any]?) in
-                                                        print("获取缩略图成功：\(image)")
+//                                                        print("获取缩略图成功：\(image)")
                 })
             } else {
                 DispatchQueue.main.async {

@@ -72,15 +72,19 @@ class USSubjectResultTableViewController: UIViewController, USSubjectResultTable
         self.navigationController?.pushViewController(commentVC, animated: true)
     }
     
+    func subjectResultTableViewHeaderRefreshing() {
+        self.getSubjectResultData()
+    }
     //MARK: - ------Delegate Model------
     func getDataSuccess(_ data: USErrorAndData!) {
+        self.subjectResultTabelView?.endRefreshing()
         self.subjectResultTabelView!.reloadTableWithData(data)
         self.subjectResultData = data
         data?.storeSubjectResult(withType: self.getTypeStr())
     }
     
     func getDataWithError(_ error: USError!) {
-        
+        self.subjectResultTabelView?.endRefreshing()
     }
     //MARK: - ------Delegate Table------
 

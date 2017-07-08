@@ -31,6 +31,9 @@ NSString* const USErrorDomain = @"APIError";
     if ([[error.userInfo objectForKey:NSLocalizedDescriptionKey] rangeOfString:@"The Internet connection appears to be offline."].location != NSNotFound ) {
         return [USError errorNetwork];
     }
+    if ([[error.userInfo objectForKey:NSLocalizedDescriptionKey] rangeOfString:@"Expected CSRF token not found. Has your session expired?"].location != NSNotFound ) {
+        return [USError errorAuth];
+    }
     return [USError errorUnknow];
 }
 
@@ -65,6 +68,12 @@ NSString* const USErrorDomain = @"APIError";
     return [USError errorWithDomain:USErrorDomain
                                code:USErrorNetwork
                            userInfo:@{NSLocalizedDescriptionKey:@"网络未连接"}];
+}
+
++(instancetype)errorAuth{
+    return [USError errorWithDomain:USErrorDomain
+                               code:USErrorAuth
+                           userInfo:@{NSLocalizedDescriptionKey:@"token失效"}];
 }
 
 @end

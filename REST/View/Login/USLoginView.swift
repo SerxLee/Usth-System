@@ -122,9 +122,24 @@ class USLoginView: UIView, UITextFieldDelegate {
     //MARK: - ------Delegate Table------
     
     //MARK: - ------Delegate Other------
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if (textField.text == "") {
+            return false
+        }
+        switch textField.returnKeyType {
+        case .go:
+            self.confirmBtnDidClick()
+        default:
+            self.userName?.resignFirstResponder()
+            self.passWord?.becomeFirstResponder()
+        }
+        return true
+    }
+    
+    
     
     //MARK: - ------Event Response------
-    func confirmBtnDidClick(sender: UIButton) {
+    func confirmBtnDidClick() {
         self.hideKeyboard()
         self.delegate!.loginViewClickConfirmBtn(self.userName!.text!, password: self.passWord!.text!)
     }
@@ -139,7 +154,7 @@ class USLoginView: UIView, UITextFieldDelegate {
                 return _titleLabel
             }
             let label: UILabel = UILabel()
-            label.text = "课程成绩查询系统"
+            label.text = "URP综合教教务系统：黑科大版"
             label.textColor = UIColor.white
             label.font = UIFont.systemFont(ofSize: 28)
 
@@ -207,7 +222,7 @@ class USLoginView: UIView, UITextFieldDelegate {
             btn.setTitleColor(UIColor.black, for: UIControlState.normal)
             btn.layer.cornerRadius = 5
             btn.backgroundColor = UIColor(colorLiteralRed: 1, green: 1, blue: 1, alpha: 0.5)
-            btn.addTarget(self, action: #selector(self.confirmBtnDidClick(sender:)), for: .touchUpInside)
+            btn.addTarget(self, action: #selector(self.confirmBtnDidClick), for: .touchUpInside)
             _confirmBtn = btn
             return _confirmBtn
         }
