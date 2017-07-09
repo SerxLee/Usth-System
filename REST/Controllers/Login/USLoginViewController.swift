@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import MBProgressHUD
 
 class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDataDelegate {
 
@@ -16,6 +17,7 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
     
     private var userName: String?
     private var password: String?
+    private var hudWait: MBProgressHUD?
     
     //MARK: - ------Life Circle------
     init() {
@@ -51,7 +53,8 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
     }
     //MARK: - ------Delegate View------
     func loginViewClickConfirmBtn(_ userName: String, password: String) {
-        self.showHint(in: self.view, hint: "正在登录...")
+//        self.showHint(in: self.view, hint: "正在登录...")
+        self.hudWait = MBProgressHUD.init().us_showHUD(addTo: self.view, title: "正在登录...", animated: true)
         self.userName = userName
         self.password = password
         let dictionary: NSDictionary = ["type": "passing", "username": userName, "password": password]
@@ -60,7 +63,7 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
     
     //MARK: - ------Delegate Model------
     func getDataSuccess(_ data: USErrorAndData!) {
-        self.hideHud()
+        self.hudWait?.us_hide(with: "登录成功", afterSecond: 1.5)
         UserDefaults.standard.set(true, forKey: "userHasLogin")
         UserDefaults.standard.set(self.userName, forKey: "userName")
         UserDefaults.standard.set(self.password, forKey: "password")
@@ -73,7 +76,7 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
     func getDataWithError(_ error: USError!) {
         let userInfo = error.userInfo
         let message = userInfo[NSLocalizedDescriptionKey]
-        self.showHint(in: self.view, hint: message as! String)
+        self.hudWait?.us_hide(with: message as! String, afterSecond: 1.5)
     }
 
     //MARK: - ------Delegate Table------

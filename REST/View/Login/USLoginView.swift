@@ -154,7 +154,7 @@ class USLoginView: UIView, UITextFieldDelegate {
                 return _titleLabel
             }
             let label: UILabel = UILabel()
-            label.text = "URP综合教教务系统：黑科大版"
+            label.text = "URP综合教教务系统"
             label.textColor = UIColor.white
             label.font = UIFont.systemFont(ofSize: 28)
 

@@ -22,6 +22,8 @@
 		9B0BF40A1EDA6FDF0084B505 /* edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B0BF4071EDA6FDF0084B505 /* edit@2x.png */; };
 		9B0BF40B1EDA6FDF0084B505 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B0BF4081EDA6FDF0084B505 /* edit.png */; };
 		9B2F04E71F10E2B000F6558E /* USPublicCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2F04E61F10E2B000F6558E /* USPublicCommentViewController.swift */; };
+		9B2F04E91F120D5A00F6558E /* MBProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2F04E81F120D5A00F6558E /* MBProgressHUD+Extension.swift */; };
+		9B2F04EB1F1212E600F6558E /* MBProgressHUD+Extension.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2F04EA1F1212E600F6558E /* MBProgressHUD+Extension.xcassets */; };
 		9B33FE041EDFA60B006F07DB /* USHomeCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B33FE031EDFA60B006F07DB /* USHomeCommentTableViewCell.swift */; };
 		9B33FE081EDFB3CB006F07DB /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B33FE051EDFB3CB006F07DB /* Icon-Small@3x.png */; };
 		9B33FE091EDFB3CB006F07DB /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B33FE061EDFB3CB006F07DB /* Icon-Small@2x.png */; };
@@ -205,6 +207,8 @@
 		9B0BF4071EDA6FDF0084B505 /* edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "edit@2x.png"; path = "Image/edit@2x.png"; sourceTree = "<group>"; };
 		9B0BF4081EDA6FDF0084B505 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = edit.png; path = Image/edit.png; sourceTree = "<group>"; };
 		9B2F04E61F10E2B000F6558E /* USPublicCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = USPublicCommentViewController.swift; path = REST/Controllers/PublicComment/USPublicCommentViewController.swift; sourceTree = "<group>"; };
+		9B2F04E81F120D5A00F6558E /* MBProgressHUD+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MBProgressHUD+Extension.swift"; path = "REST/Models/Categories/MBProgressHUD+Extension.swift"; sourceTree = "<group>"; };
+		9B2F04EA1F1212E600F6558E /* MBProgressHUD+Extension.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "MBProgressHUD+Extension.xcassets"; sourceTree = "<group>"; };
 		9B33FE031EDFA60B006F07DB /* USHomeCommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = USHomeCommentTableViewCell.swift; path = REST/View/Home/USHomeCommentTableViewCell.swift; sourceTree = "<group>"; };
 		9B33FE051EDFB3CB006F07DB /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@3x.png"; path = "Image/Icon-Small@3x.png"; sourceTree = "<group>"; };
 		9B33FE061EDFB3CB006F07DB /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@2x.png"; path = "Image/Icon-Small@2x.png"; sourceTree = "<group>"; };
@@ -1078,6 +1082,8 @@
 				9B8CB70D1ED08D610000DE9D /* Const.swift */,
 				9BD6254D1EE7F65F0086BF5F /* UIScrollView+Capture.swift */,
 				9B6BC5BD1EF03B7200045529 /* USController+HUD.swift */,
+				9B2F04EA1F1212E600F6558E /* MBProgressHUD+Extension.xcassets */,
+				9B2F04E81F120D5A00F6558E /* MBProgressHUD+Extension.swift */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1322,6 +1328,7 @@
 				9BD3466E1ECAD46500EBB0F3 /* home-pagey@2x.png in Resources */,
 				9B6FC2A51EDCF40900725399 /* backIcon@3x.png in Resources */,
 				9B01232A1EE181E400B45236 /* iconfont.ttf in Resources */,
+				9B2F04EB1F1212E600F6558E /* MBProgressHUD+Extension.xcassets in Resources */,
 				9BD346631ECAD46500EBB0F3 /* deliveryDetailHeader@2x.png in Resources */,
 				9BD346661ECAD46500EBB0F3 /* discovery-page@3x.png in Resources */,
 				9BD3467A1ECAD46500EBB0F3 /* overGuidance@3x.png in Resources */,
@@ -1507,6 +1514,7 @@
 				9BD625501EE818720086BF5F /* USSubjectResultDetailTableViewCell.swift in Sources */,
 				9BE321D01EC9D4340096FD47 /* USMyInfoViewController.swift in Sources */,
 				9B0123361EE26D4000B45236 /* USSearchViewController.swift in Sources */,
+				9B2F04E91F120D5A00F6558E /* MBProgressHUD+Extension.swift in Sources */,
 				9B8CB6C01ECDB2790000DE9D /* USOperationFactory.m in Sources */,
 				9B6A3F9A1EE00A3200A9B339 /* NBUINavigationBar+Base.m in Sources */,
 				9B8CB70E1ED08D610000DE9D /* Const.swift in Sources */,
