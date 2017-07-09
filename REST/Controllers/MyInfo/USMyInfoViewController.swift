@@ -154,6 +154,7 @@ class USMyInfoViewController: UIViewController, USMyInfoViewDelegate,UIImagePick
     
     func cancelLoginAction(action: UIAlertAction) -> Void {
         UserDefaults.standard.set(false, forKey: "userHasLogin")
+
         let loginVC = USLoginViewController()
         self.present(loginVC, animated: true, completion: nil)
         //FIXME: 修改登录标志

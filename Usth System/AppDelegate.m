@@ -82,8 +82,8 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    BOOL userHasLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"userHasLogin"];
-    
+    NSNumber *temp = [[NSUserDefaults standardUserDefaults] objectForKey:@"userHasLogin"];
+    BOOL userHasLogin = temp.boolValue;
     if (userHasLogin) {
         self.window.rootViewController = [USTabBarViewController new];
     } else {
