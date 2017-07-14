@@ -124,7 +124,7 @@ class USAnalyseViewController: UIViewController {
             if (_rightBarBtn != nil) {
                 return _rightBarBtn
             }
-            let barBtn = UIBarButtonItem.init(title: "\u{e61f}", style: .plain, target: self, action: #selector(self.rightBarItemAction(sender:)))
+            let barBtn = UIBarButtonItem.init(title: "\u{e63e}", style: .plain, target: self, action: #selector(self.rightBarItemAction(sender:)))
             barBtn.setTitleTextAttributes([NSFontAttributeName: UIFont.init(name: "iconfont", size: 25.0)!], for: .normal)
             barBtn.tintColor = UIColor.white
             

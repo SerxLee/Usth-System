@@ -15,6 +15,7 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
     private var _loginView: USLoginView?
     private var _subjectResultModel: USErrorAndData?
     
+    private var loginHistory: USLoginHistory!
     private var userName: String?
     private var password: String?
     private var hudWait: MBProgressHUD?
@@ -34,6 +35,7 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.loginHistory = USLoginHistory.getStore()
         self.view.addSubview(self.loginView!)
         self.layoutPageSubviews()
     }
@@ -51,6 +53,48 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
             make.edges.equalTo(self.view)
         })
     }
+
+    func storeLoginRecord() {
+        var recordArr: Array<USLoginHistory> = []
+        if self.loginHistory == nil {
+            self.loginHistory = USLoginHistory()
+        } else {
+            if self.loginHistory.recordArr != nil {
+                recordArr = self.loginHistory.recordArr as! Array<USLoginHistory>
+                for i in 0..<recordArr.count {
+                    let record = recordArr[i]
+                    if record.userNameStr == self.userName && record.passwordStr == self.password {
+                        return
+                    }
+                }
+            }
+        }
+        let tempRecord = USLoginHistory()
+        tempRecord.userNameStr = self.userName
+        tempRecord.passwordStr = self.password
+        recordArr.append(tempRecord)
+        self.loginHistory.recordArr = recordArr
+        self.loginHistory.store()
+    }
+    
+    func deleteLoginRecord(with deleteRecord: USLoginHistory) {
+        if self.loginHistory == nil || self.loginHistory.recordArr == nil || self.loginHistory.recordArr.count == 0 {
+            return
+        }
+        var recordArr: Array<USLoginHistory>? = self.loginHistory.recordArr as? Array<USLoginHistory>
+        for i in 0..<recordArr!.count {
+            let record = recordArr![i]
+            if record.userNameStr == deleteRecord.userNameStr {
+                recordArr!.remove(at: i)
+                break
+            }
+        }
+        recordArr = recordArr?.count == 0 ? nil: recordArr
+        self.loginHistory.recordArr = recordArr
+        self.loginHistory.store()
+        self.loginView?.loginHistoryArr = recordArr
+    }
+    
     //MARK: - ------Delegate View------
     func loginViewClickConfirmBtn(_ userName: String, password: String) {
 //        self.showHint(in: self.view, hint: "正在登录...")
@@ -61,6 +105,9 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
         self.subjectResultModel?.getWith(dictionary as! [AnyHashable : Any])
     }
     
+    func loginViewDeleteRecord(with record: USLoginHistory) {
+        self.deleteLoginRecord(with: record)
+    }
     //MARK: - ------Delegate Model------
     func getDataSuccess(_ data: USErrorAndData!) {
         self.hudWait?.us_hide(with: "登录成功", afterSecond: 1.5)
@@ -70,13 +117,14 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
         data?.storeSubjectResult(withType: "passing")
         let myInfo = data?.myInfo
         myInfo?.store()
+        self.storeLoginRecord()
         let tabBarVC = USTabBarViewController()
         self.present(tabBarVC, animated: true, completion: nil)
     }
     func getDataWithError(_ error: USError!) {
         let userInfo = error.userInfo
         let message = userInfo[NSLocalizedDescriptionKey]
-        self.hudWait?.us_hide(with: message as! String, afterSecond: 1.5)
+        self.hudWait?.us_hide(with: message as? String, afterSecond: 1.5)
     }
 
     //MARK: - ------Delegate Table------
@@ -91,7 +139,11 @@ class USLoginViewController: UIViewController, USLoginViewDelegate, USErrorAndDa
             if (_loginView != nil) {
                 return _loginView
             }
-            let loginV = USLoginView()
+            var recordArr: Array<Any>? = nil
+            if (self.loginHistory != nil && self.loginHistory.recordArr != nil && self.loginHistory.recordArr.count > 0) {
+                recordArr = self.loginHistory.recordArr
+            }
+            let loginV = USLoginView.init(with: recordArr)
             loginV.delegate = self
             _loginView = loginV
             return _loginView

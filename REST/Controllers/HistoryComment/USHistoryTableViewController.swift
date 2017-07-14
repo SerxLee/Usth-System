@@ -36,7 +36,6 @@ class USHistoryTableViewController: UIViewController, USHistoryCommentViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.filterComment()
         self.view.addSubview(self.historyCommentView!)
         self.layoutPageSubviews()
     }
@@ -79,13 +78,7 @@ class USHistoryTableViewController: UIViewController, USHistoryCommentViewDelega
             if (_historyCommentView != nil) {
                 return _historyCommentView
             }
-            let comment: USComment!
-            if isPusblish {
-                comment = self.publicCommentData
-            } else {
-                comment = self.subjectCommentData
-            }
-            let tempView = USHistoryCommentView.init(self.isPusblish, comment: comment)
+            let tempView = USHistoryCommentView.init(self.isPusblish, comment: self.commentData)
             tempView.delegate = self
             _historyCommentView = tempView
             return _historyCommentView

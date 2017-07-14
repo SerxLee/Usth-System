@@ -32,7 +32,7 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private var _tableView: UITableView?
-    
+    private var waveView: USWaveView!
     //MARK: - ------Life Circle------
     init() {
         super.init(frame: CGRect.zero)
@@ -41,6 +41,7 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
     convenience init(_ info: USMyInfo?) {
         self.init()
         self.addSubview(self.tableView!)
+        self.addSubview(self.headerView!)
         self.layoutPageSubviews()
         
         self.reloadInfoWith(info)
@@ -51,8 +52,15 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     //MARK: - ------Methods------
     func layoutPageSubviews() {
+        self.headerView!.snp.makeConstraints { (make) in
+            make.left.right.equalTo(self)
+            make.top.equalTo(self)
+            make.height.equalTo(200.0)
+        }
+        
         self.tableView!.snp.makeConstraints { (make) in
-            make.edges.equalTo(self)
+            make.top.equalTo(self.headerView!.snp.bottom).offset(-1.0)
+            make.left.right.bottom.equalTo(self)
         }
     }
     
@@ -88,19 +96,21 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: myInfoTableViewCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: myInfoTableViewCellIdentifier, for: indexPath) as! USMyInfoTableViewCell
         if (indexPath.section == 0) {
-            cell.textLabel?.text = "清理缓存"
+            cell.fillLabel(with: "\u{e60d}  清理缓存")
         } else {
             switch indexPath.row {
             case 0:
-                cell.textLabel?.text = "意见反馈"
+                cell.fillLabel(with: "\u{e8a1}  意见反馈")
+                cell.showBottomLine()
                 break
             case 1:
-                cell.textLabel?.text = "关于设计"
+                cell.fillLabel(with: "\u{e896}  关于设计")
+                cell.showBottomLine()
                 break
             default:
-                cell.textLabel?.text = "退出登录"
+                cell.fillLabel(with: "\u{e895}  退出登录")
                 break
             }
         }
@@ -109,11 +119,15 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0.0
+        }
+        
         return CGFloat(Float.ulpOfOne)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10.0
+        return 1.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -147,33 +161,34 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
             if (_headerView != nil) {
                 return _headerView
             }
-            let view = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 100))
-            view.backgroundColor = UIColor.white
+            let view = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 200.0))
+            view.backgroundColor = UIColor.sexBlue()
             
             view.addSubview(self.headerImgView!)
             view.addSubview(self.stuNameLab!)
             view.addSubview(self.classNameLab!)
-            
             self.headerImgView!.snp.makeConstraints { (make) in
                 make.height.equalTo(60.0)
                 make.width.equalTo(60.0)
-                make.left.equalTo(view).offset(18.0)
-                make.centerY.equalTo(view.snp.centerY)
+                make.centerX.equalTo(view)
+                make.centerY.equalTo(view).offset(-20.0)
             }
-            
+
             self.stuNameLab!.snp.makeConstraints { (make) in
                 make.height.equalTo(20.0)
-                make.centerY.equalTo(view.snp.centerY).offset(-15)
-                make.width.equalTo(150.0)
-                make.left.equalTo(self.headerImgView!.snp.right).offset(10.0)
+                make.top.equalTo(self.headerImgView!.snp.bottom).offset(10.0)
+                make.left.right.equalTo(view)
+                
             }
-            
             self.classNameLab!.snp.makeConstraints { (make) in
                 make.height.equalTo(20.0)
-                make.centerY.equalTo(view.snp.centerY).offset(15)
-                make.width.equalTo(150.0)
-                make.left.equalTo(self.headerImgView!.snp.right).offset(10.0)
+                make.top.equalTo(self.stuNameLab!.snp.bottom).offset(5.0)
+                make.left.right.equalTo(view)
             }
+            
+            self.waveView = USWaveView.init(frame: CGRect.init(x: 0, y: 190.0, width: SCREEN_WIDTH, height: 10.0))
+            view.addSubview(self.waveView)
+            self.waveView.startWave()
             
             _headerView = view;
             return _headerView
@@ -189,19 +204,14 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
                 return _tableView
             }
             let tableV = UITableView.init(frame: CGRect.zero, style: .grouped)
-            tableV.rowHeight = 48.0
+//            tableV.rowHeight = 48.0
             tableV.delegate = self
             tableV.dataSource = self
             tableV.backgroundColor = UIColor.sexLightGray()
             tableV.tableFooterView = UIView()
             tableV.isScrollEnabled = false
-            tableV.register(UITableViewCell.self, forCellReuseIdentifier: myInfoTableViewCellIdentifier)
-            tableV.separatorStyle = .singleLine
-            tableV.tableHeaderView = self.headerView!
-            self.headerView!.snp.makeConstraints { (make) in
-                make.height.equalTo(100.0)
-                make.width.equalTo(SCREEN_WIDTH)
-            }
+            tableV.register(USMyInfoTableViewCell.self, forCellReuseIdentifier: myInfoTableViewCellIdentifier)
+            tableV.separatorStyle = .none
             
             _tableView = tableV
             return _tableView
@@ -237,8 +247,9 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
                 return _stuNameLab
             }
             let label = UILabel()
-            label.backgroundColor = UIColor.white
-            label.textColor = UIColor.black
+            label.backgroundColor = UIColor.clear
+            label.textColor = UIColor.white
+            label.textAlignment = .center
             label.font = UIFont.systemFont(ofSize: 14)
             _stuNameLab = label
             return _stuNameLab
@@ -253,8 +264,9 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
                 return _classNameLab
             }
             let label = UILabel()
-            label.backgroundColor = UIColor.white
-            label.textColor = UIColor.black
+            label.backgroundColor = UIColor.clear
+            label.textColor = UIColor.white
+            label.textAlignment = .center
             label.font = UIFont.systemFont(ofSize: 14)
             _classNameLab = label
             return _classNameLab

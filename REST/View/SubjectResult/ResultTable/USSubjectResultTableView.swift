@@ -32,7 +32,7 @@ private let subjectResultDetailTableCellIdentifier: String = "subjectResultDetai
     
 }
 
-class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelegate {
+class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelegate, CYLTableViewPlaceHolderDelegate, USPlaceHolderViewDelegate {
 
     private var data: USErrorAndData?
     
@@ -41,6 +41,8 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
     
     private var cellType: CellType = .simple
     private var _tableView: UITableView?
+    private var _placeHolderView: USPlaceHolderView?
+    
 
     //MARK: - ------Life Circle------
     init() {
@@ -82,7 +84,7 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
     
     func reloadTableWithData(_ data: USErrorAndData?) {
         self.data = data
-        self.tableView?.reloadData()
+        self.tableView?.cyl_reloadData()
     }
     
     func changeTableViewCellType(_ cellType: CellType) {
@@ -95,17 +97,30 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
             } else {
                 self.tableView?.rowHeight = 100.0
             }
-            self.tableView?.reloadData()
+            self.tableView?.cyl_reloadData()
         }
     }
     //MARK: - ------Delegate View------
+    func reloadBtnAction() {
+        self.startRefresh()
+    }
     
     //MARK: - ------Delegate Model------
     
     //MARK: - ------Delegate Table------
     func numberOfSections(in tableView: UITableView) -> Int {
         if (self.data != nil) {
-            return self.data!.semesterArr.count
+            if (data?.semesterArr != nil) {
+                let semesterArr = self.data!.semesterArr
+                var semesterCount = semesterArr!.count
+                for i in 0..<semesterArr!.count {
+                    let semester: USSemester? = semesterArr![i] as? USSemester
+                    if (semester != nil && semester!.subjectArr.count == 0) {
+                        semesterCount -= 1
+                    }
+                }
+                return semesterCount
+            }
         }
         return 0
     }
@@ -137,7 +152,9 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: subjectResultDetailTableCellIdentifier) as! USSubjectResultDetailTableViewCell
                     cell.classNameLab?.text = subject!.name
-                    cell.scoreLab?.text = "考试成绩：" + String(format: "%d", subject!.score.intValue)
+                    
+                    let scoreStr = String(format: "%d", subject!.score.intValue)
+                    cell.scoreLab?.text = scoreStr
                     cell.classIdLab?.text = "课程编号：" + subject!.subjectId
                     cell.creditLab?.text = "学分：" + String(format: "%d", subject!.credit.intValue)
                     cell.typeLab?.text = "课程类型：" + subject!.type
@@ -171,6 +188,17 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
         tableView.deselectRow(at: indexPath, animated: true)
     }
     //MARK: - ------Delegate Other------
+    func makePlaceHolderView() -> UIView! {
+        let wifi: Reachability = Reachability.forLocalWiFi()
+        let conn: Reachability = Reachability.forInternetConnection()
+        if (wifi.currentReachabilityStatus() != NotReachable || conn.currentReachabilityStatus() != NotReachable) {
+            self.placeHolderView!.loadPlaceHolderView(with: "没有成绩", and: PlaceHolderViewType.NotData)
+        }
+        else {
+            self.placeHolderView!.loadPlaceHolderView(with: "数据加载失败\n请确保你的手机已经联网", and: PlaceHolderViewType.NotNetwork)
+        }
+        return self.placeHolderView!
+    }
     
     //MARK: - ------Event Response------
     
@@ -198,6 +226,19 @@ class USSubjectResultTableView: UIView, UITableViewDataSource, UITableViewDelega
         }
         set {
             _tableView = newValue
+        }
+    }
+    
+    var placeHolderView: USPlaceHolderView? {
+        get {
+            if _placeHolderView != nil {
+                return _placeHolderView
+            }
+            let view = USPlaceHolderView()
+            view.delegate = self
+            
+            _placeHolderView = view
+            return _placeHolderView
         }
     }
     //MARK: - ------Serialize and Deserialize------

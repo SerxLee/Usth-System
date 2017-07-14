@@ -17,12 +17,13 @@ protocol USHistoryCommentViewDelegate: NSObjectProtocol {
 
 private let historyCommentsTableCellIdentifier: String = "historyCommentsTableCellIdentifier"
 
-class USHistoryCommentView: UIView ,UITableViewDelegate, UITableViewDataSource {
+class USHistoryCommentView: UIView ,UITableViewDelegate, UITableViewDataSource, CYLTableViewPlaceHolderDelegate {
     
     weak var delegate: USHistoryCommentViewDelegate?
     
     private var _tableView: UITableView?
-    
+    private var _placeHolderView: USPlaceHolderView?
+
     private var isPusblish: Bool!
     private var commentData: USComment!
 
@@ -32,6 +33,7 @@ class USHistoryCommentView: UIView ,UITableViewDelegate, UITableViewDataSource {
         self.commentData = comment
         super.init(frame: .zero)
         self.addSubview(self.tableView!)
+        self.tableView?.cyl_reloadData()
         self.layoutPageSubviews()
     }
     
@@ -102,7 +104,7 @@ class USHistoryCommentView: UIView ,UITableViewDelegate, UITableViewDataSource {
             cell.classNameLab?.text = tempComment.className
             cell.classNameLabSizeToFit()
         }
-        cell.publishTimeLab?.text = "发布于：" +  NSDate.init(timeIntervalSince1970: Double(tempComment.time)!).fullDescription()
+        cell.publishTimeLab?.text = "发表于：" +  NSDate.init(timeIntervalSince1970: Double(tempComment.time)!).fullDescription()
         cell.diggNumLab!.text = String.init(format: "被赞了%d次", tempComment.digg.intValue)
         cell.diggNumLabSizeToFit()
         return cell
@@ -122,6 +124,17 @@ class USHistoryCommentView: UIView ,UITableViewDelegate, UITableViewDataSource {
         }
     }
     //MARK: - ------Delegate Other------
+    func makePlaceHolderView() -> UIView! {
+        let wifi: Reachability = Reachability.forLocalWiFi()
+        let conn: Reachability = Reachability.forInternetConnection()
+        if (wifi.currentReachabilityStatus() != NotReachable || conn.currentReachabilityStatus() != NotReachable) {
+            self.placeHolderView!.loadPlaceHolderView(with: "作为一个学霸，快去说两句！", and: PlaceHolderViewType.NotHistoryComment)
+        }
+        else {
+            self.placeHolderView!.loadPlaceHolderView(with: "数据加载失败\n请确保你的手机已经联网", and: PlaceHolderViewType.NotNetwork)
+        }
+        return self.placeHolderView!
+    }
     
     //MARK: - ------Event Response------
     
@@ -140,6 +153,18 @@ class USHistoryCommentView: UIView ,UITableViewDelegate, UITableViewDataSource {
             
             _tableView = tableV
             return _tableView
+        }
+    }
+    
+    var placeHolderView: USPlaceHolderView? {
+        get {
+            if _placeHolderView != nil {
+                return _placeHolderView
+            }
+            let view = USPlaceHolderView()
+            
+            _placeHolderView = view
+            return _placeHolderView
         }
     }
     //MARK: - ------Serialize and Deserialize------
