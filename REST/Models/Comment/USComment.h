@@ -76,4 +76,12 @@
 
 -(void)diggCommentWithCommentId: (NSString *)commentId;
 
+-(void)storeComment;
+
++(USComment *)getStoreComment;
+
+#pragma mark - Serialize and Deserialize
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+- (id)initWithCoder:(NSCoder *)aDecoder;
+
 @end

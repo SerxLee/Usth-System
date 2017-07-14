@@ -179,7 +179,7 @@ class USSubjectResultViewController: UIViewController, USSubjectResultViewDelega
                 return _moreBtn
             }
             let tempBtn = UIButton.init()
-            tempBtn.setTitle("\u{e60b}", for: .normal)
+            tempBtn.setTitle("\u{e611}", for: .normal)
             
             tempBtn.titleLabel?.font = UIFont.init(name: "iconfont", size: 22.0)
             tempBtn.setTitleColor(UIColor.black, for: .normal)
@@ -200,17 +200,17 @@ class USSubjectResultViewController: UIViewController, USSubjectResultViewDelega
             tempView.layer.cornerRadius = 8.0
             
             let simpleBtn = UIButton.init()
-            simpleBtn.setTitle("普通显示", for: .normal)
-            simpleBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
-            simpleBtn.setTitleColor(UIColor.black, for: .normal)
-            simpleBtn.setTitleColor(UIColor.homeLightYellow(), for: .focused)
+            let attributeStr = NSMutableAttributedString.init(string: "\u{e890} 普通显示")
+            attributeStr.setAttributes([NSFontAttributeName: UIFont.init(name: "iconfont", size: 16.0) as Any], range: NSRange.init(location: 0, length: 1))
+            attributeStr.setAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 14.0) as Any], range: NSRange.init(location: 2, length: 4))
+            simpleBtn.setAttributedTitle(attributeStr, for: UIControlState.normal)
             simpleBtn.addTarget(self, action: #selector(self.simpleBtnDidClick(_:)), for: .touchUpInside)
             
             let detailBtn = UIButton.init()
-            detailBtn.setTitle("详细显示", for: .normal)
-            detailBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
-            detailBtn.setTitleColor(UIColor.black, for: .normal)
-            detailBtn.setTitleColor(UIColor.homeLightYellow(), for: .focused)
+            let attributeStr2 = NSMutableAttributedString.init(string: "\u{e88f} 详细显示")
+            attributeStr2.setAttributes([NSFontAttributeName: UIFont.init(name: "iconfont", size: 16.0) as Any], range: NSRange.init(location: 0, length: 1))
+            attributeStr2.setAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 14.0) as Any], range: NSRange.init(location: 2, length: 4))
+            detailBtn.setAttributedTitle(attributeStr2, for: .normal)
             detailBtn.addTarget(self, action: #selector(self.detailBtnDidClick(_:)), for: .touchUpInside)
             
             let lineView = UIView()

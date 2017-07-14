@@ -16,16 +16,21 @@ class USHomeViewController: UIViewController, USCommentDelegate, USHomeViewDeleg
     
     private var _comment: USComment?
     private var _subjectResultModel: USErrorAndData?
-
     
     private var commentsModel: USComment?
+    private var publicCommentData: USComment = USComment()
+    private var subjectCommentData: USComment = USComment()
     
     //MARK: - ------Life Circle------
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.commentsModel = USComment.getStore()
+        self.filterComment(commentData: self.commentsModel)
         self.view.addSubview(self.homeView!)
         self.layoutPageSubviews()
-        self.getHistoryComments()
+        self.homeView?.firstStartReloadHistoryComment {
+            self.getHistoryComments()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,13 +62,33 @@ class USHomeViewController: UIViewController, USCommentDelegate, USHomeViewDeleg
         let myInfo: USMyInfo = USMyInfo.getStoredUser()
         self.comment!.getHistoryComments(withStuId: myInfo.stu_id)
     }
+    
+    func filterComment(commentData: USComment?) {
+        if (commentData != nil) {
+            let commentsArr = commentData!.commentsArr
+            var publicArr: [USComment] = []
+            var SubjectArr: [USComment] = []
+            
+            for index in 0..<commentsArr!.count {
+                let tempComment: USComment! = commentsArr![index] as! USComment
+                if (tempComment.className == "综合交流区") {
+                    publicArr.append(tempComment)
+                } else {
+                    SubjectArr.append(tempComment)
+                }
+            }
+            self.publicCommentData.commentsArr = publicArr
+            self.subjectCommentData.commentsArr = SubjectArr
+        }
+    }
+
     //MARK: - ------Delegate View------
     func homeViewRefreshHistoryComment() {
         self.getHistoryComments()
     }
     
     func homeViewMoreHistoryCommentBtnDidClick() {
-        let historyCommentVC = USHistoryCommentViewController.init(self.commentsModel!)
+        let historyCommentVC = USHistoryCommentViewController.init(self.publicCommentData, subjectCommentData: self.subjectCommentData)
         self.navigationController?.pushViewController(historyCommentVC, animated: true)
     }
     
@@ -93,7 +118,9 @@ class USHomeViewController: UIViewController, USCommentDelegate, USHomeViewDeleg
     //MARK: - ------Delegate Model------
     func getHistoryCommentsSuccess(_ comment: USComment!) {
         self.commentsModel = comment
-        self.homeView!.reloadHistoyCommentView(data: comment)
+        self.filterComment(commentData: self.commentsModel)
+        self.homeView!.reloadHistoyCommentView(data: self.subjectCommentData)
+        self.commentsModel?.store()
     }
     func getHistoryCommentsWithError(_ error: USError!) {
         if (error.code == Int(USErrorType.auth.rawValue)) {
@@ -119,7 +146,7 @@ class USHomeViewController: UIViewController, USCommentDelegate, USHomeViewDeleg
             if (_homeView != nil ) {
                 return _homeView
             }
-            let homeV = USHomeView()
+            let homeV = USHomeView.init(comment: self.subjectCommentData)
             homeV.delegate = self
             _homeView = homeV
             return _homeView

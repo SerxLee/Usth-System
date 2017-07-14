@@ -48,11 +48,9 @@ public class USTabBarViewController: UITabBarController {
         analyseNVC.tabBarItem = UITabBarItem.init(title: "成绩分析", image: UIImage.init(named: "strategy-page"), selectedImage: UIImage.init(named: "strategy-pagey"))
         
         let myInfoVC = USMyInfoViewController()
-        let myInfoNVC = USNavigationViewController.init(rootViewController: myInfoVC)
-        myInfoVC.title = "个人信息"
-        myInfoNVC.tabBarItem = UITabBarItem.init(title: "我的", image: UIImage.init(named: "my-information"), selectedImage: UIImage.init(named: "my-informationy"))
+        myInfoVC.tabBarItem = UITabBarItem.init(title: "我的", image: UIImage.init(named: "my-information"), selectedImage: UIImage.init(named: "my-informationy"))
         
-        controllers = [homeNVC, subjectResultNVC, analyseNVC, myInfoNVC]
+        controllers = [homeNVC, subjectResultNVC, analyseNVC, myInfoVC]
         self.setViewControllers(controllers, animated: true)
     }
     //MARK: - ------Delegate View------

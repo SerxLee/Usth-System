@@ -62,9 +62,10 @@ class USSubjectResultTableViewController: UIViewController, USSubjectResultTable
             return "passing"
         } else if (tableViewType == .semester) {
             return "semester"
-        } else {
+        } else if (tableViewType == .fail){
             return "fail"
         }
+        return ""
     }
     //MARK: - ------Delegate View------
     func subjectResultTableViewDidSelecteCell(subject: USSubject) {
@@ -85,6 +86,7 @@ class USSubjectResultTableViewController: UIViewController, USSubjectResultTable
     
     func getDataWithError(_ error: USError!) {
         self.subjectResultTabelView?.endRefreshing()
+        self.subjectResultTabelView!.reloadTableWithData(self.subjectResultData)
     }
     //MARK: - ------Delegate Table------
 

@@ -28,7 +28,8 @@ class USCommentViewController: UIViewController, USCommentDelegate, USCommentVie
     private var operation: OperationType = .None
     private var operationComment: USComment?
     private var commentStr: String?
-
+    private var publicCommentData: USComment = USComment()
+    private var subjectCommentData: USComment = USComment()
     
     private var classId: String!
     private var isPublic: Bool!
@@ -97,7 +98,24 @@ class USCommentViewController: UIViewController, USCommentDelegate, USCommentVie
         self.showHint(in: self.view, hint: error.errorMessage())
     }
     
-
+    func filterComment(commentData: USComment?) {
+        if (commentData != nil) {
+            let commentsArr = commentData!.commentsArr
+            var publicArr: [USComment] = []
+            var SubjectArr: [USComment] = []
+            
+            for index in 0..<commentsArr!.count {
+                let tempComment: USComment! = commentsArr![index] as! USComment
+                if (tempComment.className == "综合交流区") {
+                    publicArr.append(tempComment)
+                } else {
+                    SubjectArr.append(tempComment)
+                }
+            }
+            self.publicCommentData.commentsArr = publicArr
+            self.subjectCommentData.commentsArr = SubjectArr
+        }
+    }
     //MARK: - ------Delegate View------
     func commentViewReplyComment(operationComment: USComment, commentStr: String) {
         if commentStr == "" {
@@ -232,7 +250,8 @@ class USCommentViewController: UIViewController, USCommentDelegate, USCommentVie
     func getHistoryCommentsSuccess(_ comment: USComment!) {
         self.hideHud()
         if (comment.errCode != -1) {
-            let historyCommentVC = USHistoryCommentViewController.init(comment)
+            self.filterComment(commentData: comment)
+            let historyCommentVC = USHistoryCommentViewController.init(self.publicCommentData, subjectCommentData: self.subjectCommentData)
             self.navigationController?.pushViewController(historyCommentVC, animated: true)
         }
     }
