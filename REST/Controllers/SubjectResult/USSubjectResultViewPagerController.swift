@@ -103,10 +103,13 @@ class USSubjectResultViewPagerController: ViewPagerController, ViewPagerDelegate
         switch index {
         case 0:
             return passingTVC
+            
         case 1:
             return semesterTVC
+            
         default:
             return failTVC
+            
         }
     }
     

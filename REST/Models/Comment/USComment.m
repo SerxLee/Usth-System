@@ -8,8 +8,28 @@
 
 #import "USComment.h"
 #import "AppDelegate.h"
+#import "USStoreEntity.h"
 
 @implementation USComment
+
+-(void)storeComment {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    [USStoreEntity setValue:data withKey:[USComment createStoreKey]];
+}
+
++(USComment *)getStoreComment {
+    NSData *tempData = [USStoreEntity valueWithKey:[USComment createStoreKey]];
+    if (tempData == nil){
+        return nil;
+    }
+    return [NSKeyedUnarchiver unarchiveObjectWithData:tempData];
+}
+
++ (NSString *)createStoreKey {
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    NSString *key = [NSString stringWithFormat:@"COMMENT-%@", userName];
+    return key;
+}
 
 -(void)getCommentsWithClassId:(NSString *)classId {
     AppDelegate* appDelegate =(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -170,5 +190,45 @@
     self.lastComment = commentsArr.lastObject;
 }
 
+-(void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:[NSNumber numberWithInteger:self.errCode] forKey:@"errCode"];
+    [aCoder encodeObject:self.errReason forKey:@"errReason"];
+    [aCoder encodeObject:self.commentsArr forKey:@"commentsArr"];
+    [aCoder encodeObject:self.time forKey:@"time"];
+    [aCoder encodeObject:self.authorName forKey:@"authorName"];
+    [aCoder encodeObject:self.stuId forKey:@"stuId"];
+    [aCoder encodeObject:self.content forKey:@"content"];
+    [aCoder encodeObject:self.className forKey:@"className"];
+    [aCoder encodeObject:self.digg forKey:@"digg"];
+    [aCoder encodeObject:self.commentId forKey:@"commentId"];
+    [aCoder encodeObject:self.refId forKey:@"refId"];
+    [aCoder encodeObject:self.RefedAuthorId forKey:@"RefedAuthorId"];
+    [aCoder encodeObject:self.refedAuthor forKey:@"refedAuthor"];
+    [aCoder encodeObject:self.refedContent forKey:@"refedContent"];
+    [aCoder encodeObject:self.digged forKey:@"digged"];
+    [aCoder encodeObject:self.head forKey:@"head"];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [self init]) {
+        self.errCode = [[aDecoder decodeObjectForKey:@"errCode"]integerValue];
+        self.errReason = [aDecoder decodeObjectForKey:@"errReason"];
+        self.commentsArr = [aDecoder decodeObjectForKey:@"commentsArr"];
+        self.time = [aDecoder decodeObjectForKey:@"time"];
+        self.authorName = [aDecoder decodeObjectForKey:@"authorName"];
+        self.stuId = [aDecoder decodeObjectForKey:@"stuId"];
+        self.content = [aDecoder decodeObjectForKey:@"content"];
+        self.className = [aDecoder decodeObjectForKey:@"className"];
+        self.digg = [aDecoder decodeObjectForKey:@"digg"];
+        self.commentId = [aDecoder decodeObjectForKey:@"commentId"];
+        self.refId = [aDecoder decodeObjectForKey:@"refId"];
+        self.RefedAuthorId = [aDecoder decodeObjectForKey:@"RefedAuthorId"];
+        self.refedAuthor = [aDecoder decodeObjectForKey:@"refedAuthor"];
+        self.refedContent = [aDecoder decodeObjectForKey:@"refedContent"];
+        self.digged = [aDecoder decodeObjectForKey:@"digged"];
+        self.head = [aDecoder decodeObjectForKey:@"head"];
+    }
+    return self;
+}
 
 @end

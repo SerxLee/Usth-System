@@ -10,6 +10,9 @@
 #import "UIView+RoundedCorner.h"
 #import <UMSocialCore/UMSocialCore.h>
 #import <UShareUI/UShareUI.h>
+#import "USLoginHistory.h"
+#import "CYLTableViewPlaceHolder.h"
+#import "Reachability.h"
 
 #import "UINavigationBar+Awesome.h"
 #import "USErrorAndData.h"

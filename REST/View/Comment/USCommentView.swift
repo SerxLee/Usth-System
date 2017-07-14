@@ -25,7 +25,7 @@ protocol USCommentViewDelegate: NSObjectProtocol {
     func commentViewFooterRefresh()
 }
 
-class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate , USCommentTableViewCellDelegate{
+class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate , USCommentTableViewCellDelegate, CYLTableViewPlaceHolderDelegate , USPlaceHolderViewDelegate{
     
     weak var delegete: USCommentViewDelegate?
     
@@ -38,6 +38,7 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
     private var _headerView: UIView?
 
     private var _tableView: UITableView?
+    private var _placeHolderView: USPlaceHolderView?
     
     private var _fakeCommentInputFieldAccessoryView: UIView?
     private var _realCommentInputField: UITextField?
@@ -101,9 +102,9 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
         if (comments != nil) {
             if !isFooterRefresh {
                 self.commentModel = comments
-                self.tableView?.reloadData()
+                self.tableView?.cyl_reloadData()
                 self.tableView?.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
-                if (self.tableView!.mj_footer == nil) {
+                if (self.tableView!.mj_footer == nil && self.commentModel!.commentsArr.count > 0) {
                     self.tableView!.mj_footer = MJRefreshAutoNormalFooter.init(refreshingTarget: self, refreshingAction: #selector(self.footerRefreshing))
                 }
             } else {
@@ -112,10 +113,10 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
                     newCommentsArr.append(tempComment)
                 }
                 self.commentModel!.commentsArr = newCommentsArr
-                self.tableView?.reloadData()
+                self.tableView?.cyl_reloadData()
             }
         }
-        if (comments == nil || comments!.commentsArr.count <= 20) {
+        if (self.tableView!.mj_footer != nil && (comments == nil || comments!.commentsArr.count < 20)) {
             self.tableView!.mj_footer.state = .noMoreData
         }
     }
@@ -203,6 +204,9 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
         self.delegete?.commentViewHeaderToHistoryComments(operationComment: tempComment)
     }
     
+    func reloadBtnAction() {
+        self.startRefresh()
+    }
     //MARK: - ------Delegate Model------
     
     //MARK: - ------Delegate Table------
@@ -272,6 +276,17 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
         return true
     }
     
+    func makePlaceHolderView() -> UIView! {
+        let wifi: Reachability = Reachability.forLocalWiFi()
+        let conn: Reachability = Reachability.forInternetConnection()
+        if (wifi.currentReachabilityStatus() != NotReachable || conn.currentReachabilityStatus() != NotReachable) {
+            self.placeHolderView!.loadPlaceHolderView(with: "还没有人吐槽\n让我来抢第一个沙发", and: PlaceHolderViewType.NotComment)
+        }
+        else {
+            self.placeHolderView!.loadPlaceHolderView(with: "数据加载失败\n请确保你的手机已经联网", and: PlaceHolderViewType.NotNetwork)
+        }
+        return self.placeHolderView!
+    }
     //MARK: - ------Event Response------
     func rightBarItemAction(sender: AnyObject) {
         //TODO: edit a new comment
@@ -384,7 +399,19 @@ class USCommentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextF
         }
     }
 
-
+    var placeHolderView: USPlaceHolderView? {
+        get {
+            if _placeHolderView != nil {
+                return _placeHolderView
+            }
+            let view = USPlaceHolderView()
+            view.delegate = self
+            
+            _placeHolderView = view
+            return _placeHolderView
+        }
+    }
+    
     //MARK: - ------Serialize and Deserialize------
 
 }

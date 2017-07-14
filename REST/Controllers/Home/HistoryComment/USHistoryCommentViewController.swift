@@ -17,6 +17,9 @@ class USHistoryCommentViewController: ViewPagerController, ViewPagerDelegate, Vi
     private var _publishCommentVC: USHistoryTableViewController?
     private var _subjectCommentVC: USHistoryTableViewController?
     
+    private var publicCommentData: USComment!
+    private var subjectCommentData: USComment!
+    
     private let pagerCount: Int = 2
     
     //MARK: - ------Life Circle------
@@ -24,9 +27,10 @@ class USHistoryCommentViewController: ViewPagerController, ViewPagerDelegate, Vi
         super.init(nibName: nil, bundle: nil)
     }
     
-    convenience init(_ comment: USComment) {
+    convenience init(_ publicCommentData: USComment, subjectCommentData: USComment) {
         self.init()
-        self.commentData = comment
+        self.publicCommentData = publicCommentData
+        self.subjectCommentData = subjectCommentData
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -98,10 +102,10 @@ class USHistoryCommentViewController: ViewPagerController, ViewPagerDelegate, Vi
         label.font = UIFont.systemFont(ofSize: 14.0)
         switch index {
         case 0:
-            label.text = "课程区历史"
+            label.text = "课程板块"
             break
         default:
-            label.text = "综合区历史"
+            label.text = "综合板块"
             break
         }
         label.textAlignment = NSTextAlignment.center
@@ -126,7 +130,7 @@ class USHistoryCommentViewController: ViewPagerController, ViewPagerDelegate, Vi
             if (_publishCommentVC != nil) {
                 return _publishCommentVC
             }
-            let tableVC = USHistoryTableViewController.init(true, comment: self.commentData)
+            let tableVC = USHistoryTableViewController.init(true, comment: self.publicCommentData)
             _publishCommentVC = tableVC
             return _publishCommentVC
         }
@@ -137,7 +141,7 @@ class USHistoryCommentViewController: ViewPagerController, ViewPagerDelegate, Vi
             if (_subjectCommentVC != nil) {
                 return _subjectCommentVC
             }
-            let tableVC = USHistoryTableViewController.init(false, comment: self.commentData)
+            let tableVC = USHistoryTableViewController.init(false, comment: self.subjectCommentData)
             _subjectCommentVC = tableVC
             return _subjectCommentVC
         }
