@@ -118,17 +118,29 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0.0
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (section == 0) {
+            return 0.01
         }
-        
-        return CGFloat(Float.ulpOfOne)
+        return 12.0
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height: 1.0))
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1.0
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height: 1.0))
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -204,7 +216,7 @@ class USMyInfoView: UIView, UITableViewDelegate, UITableViewDataSource {
                 return _tableView
             }
             let tableV = UITableView.init(frame: CGRect.zero, style: .grouped)
-//            tableV.rowHeight = 48.0
+            tableV.rowHeight = 48.0
             tableV.delegate = self
             tableV.dataSource = self
             tableV.backgroundColor = UIColor.sexLightGray()

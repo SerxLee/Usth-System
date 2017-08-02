@@ -197,7 +197,7 @@
     if (_operationFactory != nil) {
         return _operationFactory;
     }
-    _operationFactory = [[USOperationFactory alloc] initWithAccessToken:@"" acceptMIMEType:@"" APIServerURI: [NSURL URLWithString:@"http://usth2.eycia.me:4000"]];
+    _operationFactory = [[USOperationFactory alloc] initWithAccessToken:@"" acceptMIMEType:@"" APIServerURI: [NSURL URLWithString:@"https://usth.eycia.me"]];
     
     
     return _operationFactory;

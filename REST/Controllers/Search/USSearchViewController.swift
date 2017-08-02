@@ -131,7 +131,7 @@ class USSearchViewController: UIViewController,UISearchBarDelegate, UITableViewD
             if (_mySearchBar != nil) {
                 return _mySearchBar
             }
-            let bar = UISearchBar.init(frame: CGRect.init(x: 0, y: 0, width: 220, height: 44.0))
+            let bar = UISearchBar.init(frame: CGRect.init(x: 0, y: 0, width: 220, height: 30.0))
             bar.delegate = self
             bar.placeholder = "请输入搜索关键字"
             _mySearchBar = bar
