@@ -103,10 +103,12 @@ class USHomeView: UIView , UITableViewDelegate, UITableViewDataSource, CYLTableV
     func reloadHistoyCommentView(data: USComment?) {
         self.historyComments = data
         self.historyTableView!.cyl_reloadData()
+        self.layoutIfNeeded()
         
         var tableViewHeight = self.historyTableView!.contentSize.height
         tableViewHeight = tableViewHeight > 0 ? tableViewHeight: emptyViewHeight
         
+
         self.historyTableView!.snp.updateConstraints { (make) in
             make.height.equalTo(tableViewHeight)
         }
@@ -178,6 +180,19 @@ class USHomeView: UIView , UITableViewDelegate, UITableViewDataSource, CYLTableV
             self.layoutIfNeeded()
         }) { (finish) in
             Closer()
+        }
+    }
+    
+    func stopReloadHistoryCommentWithError(_ error: USError) {
+        self.commentUpdateBtn.isEnabled = true
+        self.waitViewIndicatorView.stopAnimating()
+        self.waitViewMessageLab.text = error.userInfo[NSLocalizedDescriptionKey] as? String
+        UIView.animate(withDuration: 0.3, delay: 1.0, options: UIViewAnimationOptions.curveEaseOut, animations: { 
+            self.waitViewConstraintToTop?.update(offset: 0.0)
+            self.waitView?.alpha = 0.0
+            self.layoutIfNeeded()
+        }) { (finish) in
+            
         }
     }
     

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "USError.h"
 
+
 @class USComment;
 
 @protocol USCommentDelegate <NSObject>
@@ -34,7 +35,7 @@
 
 @end
 
-@interface USComment : NSObject
+@interface USComment : NSObject <NSCopying, NSMutableCopying>
 
 @property (weak, nonatomic) id<USCommentDelegate> delegate;
 

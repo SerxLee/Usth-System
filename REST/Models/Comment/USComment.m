@@ -9,6 +9,7 @@
 #import "USComment.h"
 #import "AppDelegate.h"
 #import "USStoreEntity.h"
+#import <objc/runtime.h>
 
 @implementation USComment
 
@@ -53,8 +54,21 @@
             [self.delegate getCommentsWithError: err];
         }
     };
+    
+    
     [appDelegate.operationFactory.getCommentsOperation getCommentsWithClassId:classId success:success failure:failure];
+    BOOL temp = class_addMethod([self class], nil, (IMP)dynamicMethodIMP, "v@:");
+    
 }
+
+
+void dynamicMethodIMP(id self, SEL _cmd)
+{
+    // implementation ....
+}
+
+
+
 
 -(void)getNextPageComments {
     AppDelegate* appDelegate =(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -188,6 +202,18 @@
 -(void)getLaStComment: (USComment *)comments {
     NSArray *commentsArr = comments.commentsArr;
     self.lastComment = commentsArr.lastObject;
+}
+
+-(id)copyWithZone:(NSZone *)zone {
+    USComment *comment = [[USComment allocWithZone:zone] init];
+    
+    return comment;
+}
+
+-(id)mutableCopyWithZone:(NSZone *)zone {
+    USComment *comment = [[USComment allocWithZone:zone] init];
+    
+    return comment;
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder {

@@ -125,7 +125,10 @@ class USHomeViewController: UIViewController, USCommentDelegate, USHomeViewDeleg
     func getHistoryCommentsWithError(_ error: USError!) {
         if (error.code == Int(USErrorType.auth.rawValue)) {
             self.loginServer()
+        } else {
+            self.homeView!.stopReloadHistoryCommentWithError(error)
         }
+        
     }
     
     func getDataSuccess(_ data: USErrorAndData!) {
